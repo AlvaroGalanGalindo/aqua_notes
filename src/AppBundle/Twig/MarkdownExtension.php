@@ -2,7 +2,7 @@
 
 namespace AppBundle\Twig;
 
-use AppBundle\Services\MarkdownTransformer;
+use AppBundle\Service\MarkdownTransformer;
 
 class MarkdownExtension extends \Twig_Extension
 {
@@ -10,7 +10,6 @@ class MarkdownExtension extends \Twig_Extension
 
     public function __construct(MarkdownTransformer $markdownTransformer)
     {
-
         $this->markdownTransformer = $markdownTransformer;
     }
 

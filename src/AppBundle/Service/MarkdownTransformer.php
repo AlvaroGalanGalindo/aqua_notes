@@ -1,14 +1,14 @@
 <?php
 
-namespace AppBundle\Services;
+namespace AppBundle\Service;
 
 use Doctrine\Common\Cache\Cache;
 use Knp\Bundle\MarkdownBundle\MarkdownParserInterface;
 
 class MarkdownTransformer
 {
-    private $cache;
     private $markdownParser;
+    private $cache;
 
     public function __construct(MarkdownParserInterface $markdownParser, Cache $cache)
     {
@@ -27,7 +27,6 @@ class MarkdownTransformer
         sleep(1);
         $str = $this->markdownParser
             ->transformMarkdown($str);
-
         $cache->save($key, $str);
 
         return $str;

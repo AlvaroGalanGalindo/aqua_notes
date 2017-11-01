@@ -4,7 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Genus;
 use AppBundle\Entity\GenusNote;
-use AppBundle\Services\MarkdownTransformer;
+use AppBundle\Service\MarkdownTransformer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -13,7 +13,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class GenusController extends Controller
 {
-
     /**
      * @Route("/genus/new")
      */
@@ -27,7 +26,7 @@ class GenusController extends Controller
         $genusNote = new GenusNote();
         $genusNote->setUsername('AquaWeaver');
         $genusNote->setUserAvatarFilename('ryan.jpeg');
-        $genusNote->setNote('I counted 8 legs... as the wrapped around me');
+        $genusNote->setNote('I counted 8 legs... as they wrapped around me');
         $genusNote->setCreatedAt(new \DateTime('-1 month'));
         $genusNote->setGenus($genus);
 
@@ -42,13 +41,15 @@ class GenusController extends Controller
     /**
      * @Route("/genus")
      */
-    public function listAction() {
+    public function listAction()
+    {
         $em = $this->getDoctrine()->getManager();
+
         $genuses = $em->getRepository('AppBundle:Genus')
             ->findAllPublishedOrderedByRecentlyActive();
 
         return $this->render('genus/list.html.twig', [
-            'genuses' => $genuses,
+            'genuses' => $genuses
         ]);
     }
 
@@ -58,24 +59,16 @@ class GenusController extends Controller
     public function showAction($genusName)
     {
         $em = $this->getDoctrine()->getManager();
+
         $genus = $em->getRepository('AppBundle:Genus')
             ->findOneBy(['name' => $genusName]);
 
         if (!$genus) {
-            throw $this->createNotFoundException('No genus found');
+            throw $this->createNotFoundException('genus not found');
         }
 
         $markdownTransformer = $this->get('app.markdown_transformer');
         $funFact = $markdownTransformer->parse($genus->getFunFact());
-
-        /*
-
-            sleep(1);
-            $funFact = $this->get('markdown.parser')
-                ->transform($funFact);
-
-        }
-        */
 
         $this->get('logger')
             ->info('Showing genus: '.$genusName);
@@ -83,11 +76,11 @@ class GenusController extends Controller
         $recentNotes = $em->getRepository('AppBundle:GenusNote')
             ->findAllRecentNotesForGenus($genus);
 
-        return $this->render('genus/show.html.twig', [
+        return $this->render('genus/show.html.twig', array(
             'genus' => $genus,
             'funFact' => $funFact,
-            'recentNoteCount' => count($recentNotes),
-        ]);
+            'recentNoteCount' => count($recentNotes)
+        ));
     }
 
     /**
@@ -97,13 +90,14 @@ class GenusController extends Controller
     public function getNotesAction(Genus $genus)
     {
         $notes = [];
+
         foreach ($genus->getNotes() as $note) {
             $notes[] = [
                 'id' => $note->getId(),
                 'username' => $note->getUsername(),
                 'avatarUri' => '/images/'.$note->getUserAvatarFilename(),
                 'note' => $note->getNote(),
-                'date' => $note->getCreatedAt()->format('d M Y')
+                'date' => $note->getCreatedAt()->format('M d, Y')
             ];
         }
 
