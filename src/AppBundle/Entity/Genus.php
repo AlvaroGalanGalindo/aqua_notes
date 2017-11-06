@@ -66,9 +66,6 @@ class Genus
         $this->notes = new ArrayCollection();
     }
 
-    /**
-     * @return mixed
-     */
     public function getId()
     {
         return $this->id;
@@ -122,14 +119,14 @@ class Genus
         return new \DateTime('-'.rand(0, 100).' days');
     }
 
-    public function getIsPublished()
-    {
-        return $this->isPublished;
-    }
-
     public function setIsPublished($isPublished)
     {
         $this->isPublished = $isPublished;
+    }
+
+    public function getIsPublished()
+    {
+        return $this->isPublished;
     }
 
     /**

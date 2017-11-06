@@ -2,16 +2,16 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\Role\Role;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="user")
- * @UniqueEntity(fields={"email"}, message="It looks like if you already hav an account")
+ * @UniqueEntity(fields={"email"}, message="It looks like you already have an account!")
  */
 class User implements UserInterface
 {
@@ -24,17 +24,23 @@ class User implements UserInterface
 
     /**
      * @Assert\NotBlank()
+     * @Assert\Email()
      * @ORM\Column(type="string", unique=true)
      */
     private $email;
 
     /**
+     * The encoded password
+     *
      * @ORM\Column(type="string")
      */
     private $password;
 
     /**
+     * A non-persisted field that's used to create the encoded password.
      * @Assert\NotBlank(groups={"Registration"})
+     *
+     * @var string
      */
     private $plainPassword;
 
@@ -43,10 +49,27 @@ class User implements UserInterface
      */
     private $roles = [];
 
-
+    // needed by the security system
     public function getUsername()
     {
         return $this->email;
+    }
+
+    public function getRoles()
+    {
+        $roles = $this->roles;
+
+        // give everyone ROLE_USER!
+        if (!in_array('ROLE_USER', $roles)) {
+            $roles[] = 'ROLE_USER';
+        }
+
+        return $roles;
+    }
+
+    public function setRoles(array $roles)
+    {
+        $this->roles = $roles;
     }
 
     public function getPassword()
@@ -56,17 +79,7 @@ class User implements UserInterface
 
     public function getSalt()
     {
-
-    }
-
-    public function getRoles()
-    {
-        $roles = $this->roles;
-        if (!in_array('ROLE_USER', $roles)) {
-            $roles[] = 'ROLE_USER';
-        }
-
-        return $roles;
+        // leaving blank - I don't need/have a password!
     }
 
     public function eraseCredentials()
@@ -74,56 +87,31 @@ class User implements UserInterface
         $this->plainPassword = null;
     }
 
-    /**
-     * @param mixed $email
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getEmail()
     {
         return $this->email;
     }
 
-    /**
-     * @param mixed $password
-     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
+
     public function setPassword($password)
     {
         $this->password = $password;
     }
 
-    /**
-     * @return mixed
-     */
     public function getPlainPassword()
     {
         return $this->plainPassword;
     }
 
-    /**
-     * @param mixed $plainPassword
-     */
     public function setPlainPassword($plainPassword)
     {
         $this->plainPassword = $plainPassword;
-        // guarantees that the entity looks "dirty" to Doctrine
-        // when changing the plainPassword
+        // forces the object to look "dirty" to Doctrine. Avoids
+        // Doctrine *not* saving this entity, if only plainPassword changes
         $this->password = null;
     }
-
-    /**
-     * @param mixed $roles
-     */
-    public function setRoles($roles)
-    {
-        $this->roles = $roles;
-    }
-
-
 }

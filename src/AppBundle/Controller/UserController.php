@@ -2,7 +2,8 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Form\UserRegistration;
+use AppBundle\Entity\User;
+use AppBundle\Form\UserRegistrationForm;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,13 +15,12 @@ class UserController extends Controller
      */
     public function registerAction(Request $request)
     {
-        $form = $this->createForm(UserRegistration::class);
+        $form = $this->createForm(UserRegistrationForm::class);
 
         $form->handleRequest($request);
         if ($form->isValid()) {
             /** @var User $user */
             $user = $form->getData();
-
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();

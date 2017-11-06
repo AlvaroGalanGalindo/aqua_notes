@@ -2,9 +2,9 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Form\LoginForm;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use AppBundle\Form\LoginForm;
 
 class SecurityController extends Controller
 {
@@ -24,7 +24,7 @@ class SecurityController extends Controller
         $form = $this->createForm(LoginForm::class, [
             '_username' => $lastUsername,
         ]);
-
+    
         return $this->render(
             'security/login.html.twig',
             array(
@@ -39,6 +39,6 @@ class SecurityController extends Controller
      */
     public function logoutAction()
     {
-        throw new \Exception('this should not be reached');
+        throw new \Exception('this should not be reached!');
     }
 }
