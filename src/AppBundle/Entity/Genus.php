@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\GenusRepository")
@@ -24,6 +25,12 @@ class Genus
      * @ORM\Column(type="string")
      */
     private $name;
+
+    /**
+     * @ORM\Column(type="string", unique=true)
+     * @Gedmo\Slug(fields={"name"})
+     */
+    private $slug;
 
     /**
      * @Assert\NotBlank()
@@ -61,9 +68,16 @@ class Genus
      */
     private $notes;
 
+    /**
+     * @ORM\OneToMany(targetEntity="GenusScientist", mappedBy="genus", fetch="EXTRA_LAZY")
+     */
+    private $genusScientists;
+
+
     public function __construct()
     {
         $this->notes = new ArrayCollection();
+        $this->genusScientists = new ArrayCollection();
     }
 
     public function getId()
@@ -146,4 +160,51 @@ class Genus
     {
         $this->firstDiscoveredAt = $firstDiscoveredAt;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param mixed $slug
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    }
+
+    public function addGenusScientist(User $user)
+    {
+        if ($this->genusScientists->contains($user)) {
+            return;
+        }
+
+        $this->genusScientists[] = $user;
+        // not needed for persistence, just keeping both sides in sync
+        $user->addStudiedGenus($this);
+    }
+
+    public function removeGenusScientist(User $user)
+    {
+        if (!$this->genusScientists->contains($user)) {
+            return;
+        }
+
+        $this->genusScientists->removeElement($user);
+        // not needed for persistence, just keeping both sides in sync
+        $user->removeStudiedGenus($this);
+    }
+
+    /**
+     * @return ArrayCollection|GenusScientist[]
+     */
+    public function getGenusScientists()
+    {
+        return $this->genusScientists;
+    }
+
 }
