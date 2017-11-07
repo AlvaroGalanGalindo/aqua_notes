@@ -2,7 +2,9 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Repository\GenusScientistRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -69,10 +71,16 @@ class Genus
     private $notes;
 
     /**
-     * @ORM\OneToMany(targetEntity="GenusScientist", mappedBy="genus", fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(
+     *     targetEntity="GenusScientist",
+     *     mappedBy="genus",
+     *     fetch="EXTRA_LAZY",
+     *     orphanRemoval=true,
+     *     cascade={"persist"}
+     * )
+     * @Assert\Valid()
      */
     private $genusScientists;
-
 
     public function __construct()
     {
@@ -177,26 +185,26 @@ class Genus
         $this->slug = $slug;
     }
 
-    public function addGenusScientist(User $user)
+    public function addGenusScientist(GenusScientist $genusScientist)
     {
-        if ($this->genusScientists->contains($user)) {
+        if ($this->genusScientists->contains($genusScientist)) {
             return;
         }
 
-        $this->genusScientists[] = $user;
-        // not needed for persistence, just keeping both sides in sync
-        $user->addStudiedGenus($this);
+        $this->genusScientists[] = $genusScientist;
+        // needed to update the owning side of the relationship!
+        $genusScientist->setGenus($this);
     }
 
-    public function removeGenusScientist(User $user)
+    public function removeGenusScientist(GenusScientist $genusScientist)
     {
-        if (!$this->genusScientists->contains($user)) {
+        if (!$this->genusScientists->contains($genusScientist)) {
             return;
         }
 
-        $this->genusScientists->removeElement($user);
-        // not needed for persistence, just keeping both sides in sync
-        $user->removeStudiedGenus($this);
+        $this->genusScientists->removeElement($genusScientist);
+        // needed to update the owning side of the relationship!
+        $genusScientist->setGenus(null);
     }
 
     /**
@@ -205,6 +213,13 @@ class Genus
     public function getGenusScientists()
     {
         return $this->genusScientists;
+    }
+
+    public function getExpertScientists()
+    {
+        return $this->getGenusScientists()->matching(
+            GenusScientistRepository::createExpertCriteria()
+        );
     }
 
 }

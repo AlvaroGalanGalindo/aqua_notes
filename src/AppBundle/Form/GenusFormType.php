@@ -9,6 +9,7 @@ use AppBundle\Repository\UserRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -43,14 +44,11 @@ class GenusFormType extends AbstractType
                 ],
                 'html5' => false,
             ])
-            ->add('genusScientists', EntityType::class, [
-                'class' => User::class,
-                'multiple' => true,
-                'expanded' => true,
-                'choice_label' => 'email',
-                'query_builder' => function (UserRepository $repo) {
-                    return $repo->createIsScientistQueryBuilder();
-                }
+            ->add('genusScientists', CollectionType::class, [
+                'entry_type' => GenusScientistEmbeddedForm::class,
+                'allow_delete' => true,
+                'allow_add' => true,
+                'by_reference' => false,
             ])
         ;
     }
