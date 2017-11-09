@@ -223,6 +223,9 @@ class Genus
     public function feed($food)
     {
         $foodItems = [];
+        if (!is_array($food)) {
+            $food = array($food);
+        }
 
         foreach ($food as $foodItem) {
             $foodItems[] = $foodItem;
