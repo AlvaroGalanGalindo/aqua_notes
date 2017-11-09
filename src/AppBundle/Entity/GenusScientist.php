@@ -7,11 +7,11 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="AppBundle\Repository\GenusScientistRepository")
+ * @ORM\Entity
  * @ORM\Table(name="genus_scientist")
  * @UniqueEntity(
  *     fields={"genus", "user"},
- *     message="This user is already studing this genus",
+ *     message="This user is already studying this genus",
  *     errorPath="user"
  * )
  */
@@ -42,61 +42,43 @@ class GenusScientist
      */
     private $yearsStudied;
 
-    /**
-     * @return mixed
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * @return mixed
-     */
     public function getGenus()
     {
         return $this->genus;
     }
 
-    /**
-     * @param mixed $genus
-     */
     public function setGenus($genus)
     {
         $this->genus = $genus;
     }
 
-    /**
-     * @return mixed
-     */
     public function getUser()
     {
         return $this->user;
     }
 
-    /**
-     * @param mixed $user
-     */
     public function setUser($user)
     {
         $this->user = $user;
     }
 
-    /**
-     * @return mixed
-     */
     public function getYearsStudied()
     {
         return $this->yearsStudied;
     }
 
-    /**
-     * @param mixed $yearsStudied
-     */
     public function setYearsStudied($yearsStudied)
     {
         $this->yearsStudied = $yearsStudied;
     }
 
-
+    function __toString()
+    {
+        return (string) $this->getUser();
+    }
 }

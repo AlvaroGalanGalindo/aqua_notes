@@ -1,10 +1,12 @@
-(function($) {
+(function ($) {
     $(document).ready(function() {
         var $wrapper = $('.js-genus-scientist-wrapper');
+
         $wrapper.on('click', '.js-remove-scientist', function(e) {
             e.preventDefault();
 
             $(this).closest('.js-genus-scientist-item')
+                .fadeOut()
                 .remove();
         });
 
@@ -24,7 +26,7 @@
             // increase the index with one for the next item
             $wrapper.data('index', index + 1);
 
-            // Display the form in the page in an li, before the "Add a tag" link li
+            // Display the form in the page before the "new" link
             $(this).before(newForm);
         });
     });

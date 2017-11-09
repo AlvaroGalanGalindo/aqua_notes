@@ -1,7 +1,15 @@
-# Joyful Development with Symfony
+# EasyAdminBundle: Simply Amazing Admin Interfaces
 
 Well hi there! This repository holds the code and script
-for the Symfony course on KnpUniversity.
+for the [EasyAdminBundle: Simply Amazing Admin Interfaces](https://knpuniversity.com/screencast/easyadminbundle) course on KnpUniversity.
+
+## Baking Cinnamon Bread
+
+If you're more interested in baking bread than going through this tutorial,
+you're in luck! We've had *great* success with this recipe:
+https://food52.com/recipes/67878-maida-heatter-s-mile-high-cinnamon-bread
+
+Proof! https://www.instagram.com/p/BVW6G3wHGYd/
 
 ## Setup
 
@@ -59,12 +67,15 @@ Now check out the site at `http://localhost:8000`
 
 Have fun!
 
-## Have some Ideas or Feedback?
-
-And as always, thanks so much for your support and letting us do what
-we love!
+## Have Ideas, Feedback or an Issue?
 
 If you have suggestions or questions, please feel free to
-open an issue or message us.
+open an issue on this repository or comment on the course
+itself. We're watching both :).
+
+## Thanks!
+
+And as always, thanks so much for your support and letting
+us do what we love!
 
 <3 Your friends at KnpUniversity

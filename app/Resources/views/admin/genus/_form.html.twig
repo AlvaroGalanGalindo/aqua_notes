@@ -19,12 +19,13 @@
     {{ form_errors(genusForm) }}
 
     {{ form_row(genusForm.name) }}
+
     {{ form_row(genusForm.subFamily, {
-        label: 'Taxonomy Subspecies',
-        attr: {
-            class: 'foo'
+        'label': 'Taxonomic Subfamily',
+        'attr': {
+            'class': 'foo'
         },
-        placeholder: 'Select a Subfamily'
+        'placeholder': 'Select a Subfamily'
     }) }}
     {{ form_row(genusForm.speciesCount, {
         'label': 'Number of Species'
@@ -33,6 +34,7 @@
     {{ form_row(genusForm.isPublished, {
         help: 'Should this genus be shown on the site?'
     }) }}
+
     {{ form_row(genusForm.firstDiscoveredAt) }}
 
     <h3>Scientists</h3>
@@ -40,13 +42,12 @@
          data-prototype="{{ formMacros.printGenusScientistRow(genusForm.genusScientists.vars.prototype)|e('html_attr') }}"
          data-index="{{ genusForm.genusScientists|length }}"
     >
-        {% for genusScientistsForm in genusForm.genusScientists %}
-            {{ formMacros.printGenusScientistRow(genusScientistsForm) }}
-        {% endfor %}
-
+    {% for genusScientistForm in genusForm.genusScientists %}
+        {{ formMacros.printGenusScientistRow(genusScientistForm) }}
+    {% endfor %}
         <a href="#" class="js-genus-scientist-add">
             <span class="fa fa-plus-circle"></span>
-            Add another scientst
+            Add Another Scientist
         </a>
     </div>
     {# prevents weird label from showing up in new #}

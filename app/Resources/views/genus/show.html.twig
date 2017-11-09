@@ -17,14 +17,16 @@
                 <dd>{{ genus.funFact|markdownify }}</dd>
                 <dt>Recent Notes</dt>
                 <dd>{{ recentNoteCount }}</dd>
+                <dt>Diet</dt>
+                <dd>{{ recentlyAte }}</dd>
 
                 <dt>Lead Scientists</dt>
                 <dd>
                     <ul class="list-group">
-                        {% for genusScientist in genus.getGenusScientists() %}
+                        {% for genusScientist in genus.genusScientists %}
                             <li class="list-group-item js-scientist-item">
                                 <a href="{{ path('user_show', {
-                                    id: genusScientist.user.id
+                                    'id': genusScientist.user.id
                                 }) }}">
                                     {{ genusScientist.user.fullName }}
                                     ({{ genusScientist.yearsStudied }} years)
@@ -32,7 +34,7 @@
 
                                 <a href="#"
                                    class="btn btn-link btn-xs pull-right js-remove-scientist-user"
-                                   data-url="{{ path('genus_scientist_remove', {
+                                   data-url="{{ path('genus_scientists_remove', {
                                        genusId: genus.id,
                                        userId: genusScientist.user.id
                                    }) }}"
@@ -66,7 +68,7 @@
     </script>
 
     <script>
-        jQuery(document).ready(function (){
+        jQuery(document).ready(function() {
             $('.js-remove-scientist-user').on('click', function(e) {
                 e.preventDefault();
 
@@ -78,11 +80,13 @@
                     .addClass('fa-spin');
 
                 $.ajax({
-                    url   : $(this).data('url'),
+                    url: $(this).data('url'),
                     method: 'DELETE'
                 }).done(function() {
                     $el.fadeOut();
                 });
+
+                e.preventDefault();
             });
         });
     </script>

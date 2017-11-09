@@ -38,7 +38,7 @@ class GenusController extends Controller
         $genusNote->setGenus($genus);
 
         $user = $em->getRepository('AppBundle:User')
-            ->findOneby(['email' => 'pepinillo1@gmail.com']);
+            ->findOneBy(['email' => 'aquanaut1@example.org']);
 
         $genusScientist = new GenusScientist();
         $genusScientist->setGenus($genus);
@@ -46,7 +46,6 @@ class GenusController extends Controller
         $genusScientist->setYearsStudied(10);
         $em->persist($genusScientist);
 
-        $em = $this->getDoctrine()->getManager();
         $em->persist($genus);
         $em->persist($genusNote);
         $em->flush();
@@ -76,11 +75,10 @@ class GenusController extends Controller
     /**
      * @Route("/genus/{slug}", name="genus_show")
      */
-    public function showAction(Genus $genus)
+    public function showAction(Genus $genus, MarkdownTransformer $markdownTransformer)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $markdownTransformer = $this->get('app.markdown_transformer');
         $funFact = $markdownTransformer->parse($genus->getFunFact());
 
         $this->get('logger')
@@ -89,10 +87,15 @@ class GenusController extends Controller
         $recentNotes = $em->getRepository('AppBundle:GenusNote')
             ->findAllRecentNotesForGenus($genus);
 
+        $foodArray = ['shrimp', 'clams', 'lobsters', 'shark'];
+        $foodObject = new \ArrayObject($foodArray);
+        $food = $foodObject->getIterator();
+
         return $this->render('genus/show.html.twig', array(
             'genus' => $genus,
             'funFact' => $funFact,
-            'recentNoteCount' => count($recentNotes)
+            'recentNoteCount' => count($recentNotes),
+            'recentlyAte' => $genus->feed($food),
         ));
     }
 
@@ -108,7 +111,7 @@ class GenusController extends Controller
             $notes[] = [
                 'id' => $note->getId(),
                 'username' => $note->getUsername(),
-                'avatarUri' => '/images/'.$note->getUserAvatarFilename(),
+                'avatarUri' => $note->getUserAvatarUri(),
                 'note' => $note->getNote(),
                 'date' => $note->getCreatedAt()->format('M d, Y')
             ];
@@ -122,7 +125,7 @@ class GenusController extends Controller
     }
 
     /**
-     * @Route("/genus/{genusId}/scientist/{userId}", name="genus_scientist_remove")
+     * @Route("/genus/{genusId}/scientists/{userId}", name="genus_scientists_remove")
      * @Method("DELETE")
      */
     public function removeGenusScientistAction($genusId, $userId)
