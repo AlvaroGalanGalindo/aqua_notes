@@ -1,81 +1,68 @@
-# EasyAdminBundle: Simply Amazing Admin Interfaces
+Symfony Standard Edition
+========================
 
-Well hi there! This repository holds the code and script
-for the [EasyAdminBundle: Simply Amazing Admin Interfaces](https://knpuniversity.com/screencast/easyadminbundle) course on KnpUniversity.
+Welcome to the Symfony Standard Edition - a fully-functional Symfony2
+application that you can use as the skeleton for your new applications.
 
-## Baking Cinnamon Bread
+For details on how to download and get started with Symfony, see the
+[Installation][1] chapter of the Symfony Documentation.
 
-If you're more interested in baking bread than going through this tutorial,
-you're in luck! We've had *great* success with this recipe:
-https://food52.com/recipes/67878-maida-heatter-s-mile-high-cinnamon-bread
+What's inside?
+--------------
 
-Proof! https://www.instagram.com/p/BVW6G3wHGYd/
+The Symfony Standard Edition is configured with the following defaults:
 
-## Setup
+  * An AppBundle you can use to start coding;
 
-If you've just downloaded the code, congratulations!
+  * Twig as the only configured template engine;
 
-To get it working, follow these steps:
+  * Doctrine ORM/DBAL;
 
-**Setup parameters.yml**
+  * Swiftmailer;
 
-First, make sure you have an `app/config/parameters.yml`
-file (you should). If you don't, copy `app/config/parameters.yml.dist`
-to get it.
+  * Annotations enabled for everything.
 
-Next, look at the configuration and make any adjustments you
-need (like `database_password`).
+It comes pre-configured with the following bundles:
 
-**Download Composer dependencies**
+  * **FrameworkBundle** - The core Symfony framework bundle
 
-Make sure you have [Composer installed](https://getcomposer.org/download/)
-and then run:
+  * [**SensioFrameworkExtraBundle**][6] - Adds several enhancements, including
+    template and routing annotation capability
 
-```
-composer install
-```
+  * [**DoctrineBundle**][7] - Adds support for the Doctrine ORM
 
-You may alternatively need to run `php composer.phar install`, depending
-on how you installed Composer.
+  * [**TwigBundle**][8] - Adds support for the Twig templating engine
 
-**Setup the Database**
+  * [**SecurityBundle**][9] - Adds security by integrating Symfony's security
+    component
 
-Again, make sure `app/config/parameters.yml` is setup
-for your computer. Then, create the database and the
-schema!
+  * [**SwiftmailerBundle**][10] - Adds support for Swiftmailer, a library for
+    sending emails
 
-```
-php bin/console doctrine:database:create
-php bin/console doctrine:migrations:migrate
-php bin/console doctrine:fixtures:load
-```
+  * [**MonologBundle**][11] - Adds support for Monolog, a logging library
 
-If you get an error that the database exists, that should
-be ok. But if you have problems, completely drop the
-database (`doctrine:database:drop --force`) and try again.
+  * **WebProfilerBundle** (in dev/test env) - Adds profiling functionality and
+    the web debug toolbar
 
-**Start the built-in web server**
+  * **SensioDistributionBundle** (in dev/test env) - Adds functionality for
+    configuring and working with Symfony distributions
 
-You can use Nginx or Apache, but the built-in web server works
-great:
+  * [**SensioGeneratorBundle**][13] (in dev/test env) - Adds code generation
+    capabilities
 
-```
-php bin/console server:run
-```
+  * **DebugBundle** (in dev/test env) - Adds Debug and VarDumper component
+    integration
 
-Now check out the site at `http://localhost:8000`
+All libraries and bundles included in the Symfony Standard Edition are
+released under the MIT or BSD license.
 
-Have fun!
+Enjoy!
 
-## Have Ideas, Feedback or an Issue?
-
-If you have suggestions or questions, please feel free to
-open an issue on this repository or comment on the course
-itself. We're watching both :).
-
-## Thanks!
-
-And as always, thanks so much for your support and letting
-us do what we love!
-
-<3 Your friends at KnpUniversity
+[1]:  https://symfony.com/doc/3.0/book/installation.html
+[6]:  https://symfony.com/doc/current/bundles/SensioFrameworkExtraBundle/index.html
+[7]:  https://symfony.com/doc/3.0/book/doctrine.html
+[8]:  https://symfony.com/doc/3.0/book/templating.html
+[9]:  https://symfony.com/doc/3.0/book/security.html
+[10]: https://symfony.com/doc/3.0/cookbook/email.html
+[11]: https://symfony.com/doc/3.0/cookbook/logging/monolog.html
+[13]: https://symfony.com/doc/3.0/bundles/SensioGeneratorBundle/index.html
